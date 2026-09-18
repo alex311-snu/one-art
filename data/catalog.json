@@ -1,0 +1,97 @@
+{
+  "site": {
+    "name": "ONE",
+    "tagline": "서울대 미대생의 작품, 세상에 하나뿐인 ONE.",
+    "siteUrl": "https://alex311-snu.github.io/one-art/",
+    "inquiryLabel": "인스타그램 DM으로 문의하기",
+    "inquiryUrl": "https://www.instagram.com/",
+    "instagramUrl": "https://www.instagram.com/",
+    "notice": "ONE은 서울대 학생팀의 독립 프로젝트입니다. 학교의 공식 인증이나 작품 가격 상승을 뜻하지 않습니다."
+  },
+  "artists": [
+    {
+      "id": "kim-haneul",
+      "name": "김하늘",
+      "nameEn": "Kim Haneul",
+      "affiliation": "서울대학교 미술대학 서양화과",
+      "photo": "",
+      "bio": "빛이 머물다 떠난 자리를 두꺼운 물감의 층으로 기록합니다. 작업실 창가, 오후의 벽면처럼 매일 지나치는 장소에서 출발해 색과 질감만 남기는 추상 회화를 그립니다.",
+      "instagram": "",
+      "history": [
+        "2025 서울대학교 미술대학 학기말전",
+        "2026 ONE 첫 전시 · 서울대 313동"
+      ]
+    }
+  ],
+  "artworks": [
+    {
+      "id": "0027",
+      "published": true,
+      "sample": true,
+      "title": "오후의 여백",
+      "titleEn": "Afternoon Margin",
+      "artistId": "kim-haneul",
+      "year": 2026,
+      "medium": "Oil on canvas",
+      "size": { "w": 45.5, "h": 53, "d": null },
+      "edition": "Original 1/1",
+      "images": [
+        { "src": "images/artworks/0027/main.jpg", "caption": "전체" },
+        { "src": "images/artworks/0027/detail-1.jpg", "caption": "물감의 질감" }
+      ],
+      "quote": "작업실에 머문 오후의 빛을 기록했습니다.",
+      "story": "해가 기울 무렵 작업실 벽에 잠깐 머무는 빛을 매일 같은 시간에 관찰했습니다.\n\n그 빛이 사라진 뒤에도 남아 있는 벽의 온도를 떠올리며, 나이프로 물감을 여러 겹 쌓고 긁어내는 과정을 반복했습니다.",
+      "origin": "2025년 학기말 과제로 완성한 뒤 작업실에 보관되어 있던 작품입니다.",
+      "process": "",
+      "video": "",
+      "status": "available",
+      "price": 200000,
+      "framed": false,
+      "delivery": "서울 내 직접 전달 무료 · 그 외 지역 택배비 별도",
+      "viewingPlace": "서울대학교 313동 1층 로비",
+      "soldAt": "",
+      "showSoldPrice": false,
+      "care": "직사광선과 습기를 피해 걸어주세요. 먼지는 마른 붓으로 가볍게 털어냅니다.",
+      "verification": { "artistApproved": true, "approvedAt": "2026-09-16" },
+      "exhibitions": [
+        { "place": "서울대학교 313동", "from": "2026-09-16", "to": "" }
+      ],
+      "provenance": []
+    },
+    {
+      "id": "0028",
+      "published": true,
+      "sample": true,
+      "title": "창가의 초록",
+      "titleEn": "Green by the Window",
+      "artistId": "kim-haneul",
+      "year": 2025,
+      "medium": "Oil on canvas",
+      "size": { "w": 33.4, "h": 24.2, "d": null },
+      "edition": "Original 1/1",
+      "images": [
+        { "src": "images/artworks/0027/detail-1.jpg", "caption": "전체" }
+      ],
+      "quote": "창문 너머로 번지는 초록을 붙잡고 싶었습니다.",
+      "story": "비 온 다음 날 작업실 창밖의 나무를 보며 그린 작은 연작 중 한 점입니다.",
+      "origin": "",
+      "process": "",
+      "video": "",
+      "status": "sold",
+      "price": 150000,
+      "framed": true,
+      "delivery": "",
+      "viewingPlace": "",
+      "soldAt": "2026-09",
+      "showSoldPrice": true,
+      "care": "직사광선과 습기를 피해 걸어주세요.",
+      "verification": { "artistApproved": true, "approvedAt": "2026-09-15" },
+      "exhibitions": [
+        { "place": "서울대학교 313동", "from": "2026-09-16", "to": "2026-09-19" }
+      ],
+      "provenance": [
+        { "label": "첫 소장자 · 비공개", "from": "2026-09", "to": "" }
+      ]
+    }
+  ]
+}

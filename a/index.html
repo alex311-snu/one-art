@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ko" data-root="../">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="description" content="ONE — 서울대 미대생 작품의 작가 승인 기록">
+  <title>ONE · 작품 기록</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%23191a19'/><text x='32' y='42' font-family='Georgia' font-size='24' fill='%23f7f5ef' text-anchor='middle'>ONE</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <button class="icon-btn" id="menuBtn" aria-label="메뉴 열기" aria-expanded="false" aria-controls="menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <a class="logo" href="../">ONE</a>
+      <span class="chip" id="topChip">작품 기록</span>
+    </header>
+
+    <main id="app" aria-live="polite">
+      <div class="content">
+        <div class="skeleton" style="height:22px;width:120px;margin-bottom:16px"></div>
+        <div class="skeleton" style="aspect-ratio:4/3"></div>
+        <div class="skeleton" style="height:30px;width:60%;margin-top:22px"></div>
+        <div class="skeleton" style="height:18px;width:85%;margin-top:14px"></div>
+        <div class="skeleton" style="height:18px;width:70%;margin-top:8px"></div>
+      </div>
+    </main>
+  </div>
+
+  <nav class="menu" id="menu" aria-label="메뉴">
+    <div class="menu-panel">
+      <div class="menu-head">
+        <span class="logo" style="font-size:24px">ONE</span>
+        <button class="icon-btn" id="menuClose" aria-label="메뉴 닫기" style="margin-right:-10px">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+      <a href="../">컬렉션 전체 보기 <span>→</span></a>
+      <a href="#" id="menuInsta" target="_blank" rel="noopener">ONE 인스타그램 <span>↗</span></a>
+      <a href="#" id="menuInquiry" target="_blank" rel="noopener">구매·전시 문의 <span>↗</span></a>
+    </div>
+  </nav>
+
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="작품 이미지 확대">
+    <button class="icon-btn" id="lbClose" aria-label="닫기">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <img id="lbImg" alt="">
+    <p id="lbCap"></p>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script src="../assets/js/common.js"></script>
+  <script src="../assets/js/artwork.js"></script>
+</body>
+</html>

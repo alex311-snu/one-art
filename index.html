@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ko" data-root="./">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="description" content="ONE — 서울대 미대생의 작품, 세상에 하나뿐인 ONE.">
+  <title>ONE · 컬렉션</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%23191a19'/><text x='32' y='42' font-family='Georgia' font-size='24' fill='%23f7f5ef' text-anchor='middle'>ONE</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <span></span>
+      <a class="logo" href="./">ONE</a>
+      <a class="chip" id="instaChip" href="#" target="_blank" rel="noopener" style="text-decoration:none">Instagram ↗</a>
+    </header>
+
+    <section class="hero">
+      <div class="eyebrow">Art, after the show</div>
+      <h1>숨어있던 서울대생의<br>작품을 소개합니다.</h1>
+      <p id="tagline">세상에 하나뿐인 작품 ONE.</p>
+    </section>
+
+    <div class="filters" role="toolbar" aria-label="판매 상태로 거르기" id="filters"></div>
+    <main class="collection" id="list" aria-live="polite">
+      <div class="cards">
+        <div class="skeleton" style="aspect-ratio:1"></div>
+        <div class="skeleton" style="aspect-ratio:1"></div>
+      </div>
+    </main>
+    <footer class="footer" id="footer"><span class="logo">ONE</span></footer>
+  </div>
+
+  <script src="assets/js/common.js"></script>
+  <script src="assets/js/collection.js"></script>
+</body>
+</html>
