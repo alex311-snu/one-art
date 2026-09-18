@@ -236,7 +236,6 @@
       '<li>Permissions → Repository permissions → <b>Contents: Read and write</b> (나머지는 그대로)</li>' +
       '<li>Generate token → 나온 <code>github_pat_…</code> 값을 복사해 위에 붙여넣기</li>' +
       '</ol><p style="margin-top:10px">휴대폰을 잃어버리면 같은 화면에서 토큰을 삭제하세요.</p></details>' +
-      '<p class="desc" style="margin:18px 0 0">내 컴퓨터에서 테스트할 때는 <code>python dev_server.py</code>로 실행한 뒤 <code>http://localhost:8000/admin/</code>에 접속하면 로그인 없이 쓸 수 있습니다.</p>' +
       '</div></div>';
 
     document.getElementById('connectForm').onsubmit = function (e) {

@@ -10,21 +10,6 @@
 | `/a/?id=0027&src=qr` | 작품 페이지 — 전시 캡션 QR용 |
 | `/admin/` | 관리자 페이지 |
 
-## 내 컴퓨터에서 실행하기
-
-Python 3만 있으면 됩니다 (추가 설치 없음).
-
-```bash
-cd one-nfc
-python dev_server.py
-```
-
-- 컬렉션: http://localhost:8000/
-- 작품 예시: http://localhost:8000/a/?id=0027&src=nfc
-- 관리자: http://localhost:8000/admin/ ← 로컬에서는 로그인 없이 바로 저장됩니다
-
-휴대폰(같은 와이파이)으로 보려면 `python dev_server.py --lan` 후 터미널에 나오는 주소로 접속하세요.
-
 ## GitHub Pages 배포
 
 1. 현재 저장소: https://github.com/alex311-snu/one-art (공개)
