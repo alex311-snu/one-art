@@ -232,7 +232,7 @@
       '<li>GitHub 로그인 → 오른쪽 위 프로필 → <b>Settings</b></li>' +
       '<li>왼쪽 맨 아래 <b>Developer settings</b> → <b>Personal access tokens</b> → <b>Fine-grained tokens</b> → <b>Generate new token</b></li>' +
       '<li>Token name: <code>ONE 관리자 - 이름</code>, Expiration: 학기 말 날짜</li>' +
-      '<li>Resource owner: 팀 조직 선택 → Repository access: <b>Only select repositories</b> → 이 저장소 하나만 선택</li>' +
+      '<li>Resource owner: 저장소 주인 계정(예: alex311-snu) → Repository access: <b>Only select repositories</b> → 이 저장소 하나만 선택</li><li>다른 팀원이 쓰려면: 저장소 Settings → Collaborators에서 팀원을 초대한 뒤, 팀원도 각자 토큰을 만듭니다</li>' +
       '<li>Permissions → Repository permissions → <b>Contents: Read and write</b> (나머지는 그대로)</li>' +
       '<li>Generate token → 나온 <code>github_pat_…</code> 값을 복사해 위에 붙여넣기</li>' +
       '</ol><p style="margin-top:10px">휴대폰을 잃어버리면 같은 화면에서 토큰을 삭제하세요.</p></details>' +

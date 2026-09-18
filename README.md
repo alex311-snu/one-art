@@ -27,14 +27,14 @@ python dev_server.py
 
 ## GitHub Pages 배포
 
-1. 팀 GitHub 조직(예: `one-art-snu`)에 **공개 저장소**(예: `one-nfc`)를 만들고 이 폴더 내용을 올립니다.
+1. 현재 저장소: https://github.com/alex311-snu/one-art (공개)
 2. 저장소 → Settings → Pages → Source: `Deploy from a branch`, Branch: `main` / `(root)` → Save
-3. 1~2분 뒤 `https://one-art-snu.github.io/one-nfc/` 에서 열립니다.
+3. 사이트: https://alex311-snu.github.io/one-art/
 4. 관리자 페이지 → 설정 → **사이트 주소**에 위 주소를 넣고 저장합니다. (NFC·QR 주소의 기준)
 
 ## 관리자 페이지 쓰는 법 (팀원용)
 
-1. `https://…/one-nfc/admin/` 접속
+1. https://alex311-snu.github.io/one-art/admin/ 접속
 2. 처음 한 번: 저장소 소유자·이름·토큰 입력 (토큰 발급 방법은 로그인 화면의 “토큰 발급 방법”을 펼치세요)
 3. **작품 추가** → 정보 입력, 사진 추가 → **저장**
 4. 판매 상태는 목록에서 바로 바꿀 수 있습니다. “소장됨”으로 바꾸면 소장 시점과 소유 이력이 자동으로 채워집니다.
