@@ -3,6 +3,20 @@
 서울대 미대생 작품 뒤의 NFC 태그(또는 전시 캡션 QR)를 휴대폰으로 태그하면 열리는 작품 기록 웹앱입니다.
 서버 없이 GitHub Pages로 배포하고, 관리자 페이지에서 작품을 등록·수정합니다.
 
+## 문서 안내
+
+모든 설명용 Markdown 문서는 이 `docs/` 폴더에서 관리합니다. 아래 경로는 이 문서를 기준으로 합니다.
+
+| 문서 | 내용 |
+|---|---|
+| [관리자 사용법](admin-guide.md) | 연결, 작품 등록, 예약·판매·전달 처리, 이력 확인 |
+| [거래 상태와 복구 규칙](transaction-lifecycle.md) | 상태 전환, 취소, 기존 데이터 처리, 처리 기록의 의미 |
+| [개발·검증·배포](development.md) | 로컬 실행, 테스트, GitHub Pages, 캐시 갱신 |
+| [데이터 구조](data-model.md) | 작품·작가·사이트 데이터와 거래 관련 필드 |
+| [문제 해결](troubleshooting.md) | 이전 문구, 저장 충돌, 로그인 실패, 잘못된 기록 |
+
+아래 내용은 빠른 시작 안내입니다. 상세 절차와 예외는 각 문서를 확인하세요.
+
 | 주소 | 화면 |
 |---|---|
 | `/` | 컬렉션 (전체 작품) |
@@ -51,11 +65,13 @@ index.html            컬렉션
 a/index.html          작품 페이지
 admin/index.html      관리자
 assets/css/           style.css(공개) · admin.css(관리자)
-assets/js/            common.js · artwork.js · collection.js · store.js(저장: 로컬/GitHub) · admin.js
+assets/js/            공개 화면·관리자·저장소·거래 상태 처리 스크립트
 data/catalog.json     모든 데이터 (사이트 설정 · 작가 · 작품)
 images/artworks/번호/ 작품 사진
 images/artists/       작가 사진
 dev_server.py         로컬 테스트 서버 (배포에는 쓰이지 않음)
+tests/lifecycle.test.js 거래 상태 및 관리자 저장 검증
+docs/                 모든 설명용 Markdown 문서
 ```
 
 현재 들어 있는 #0027, #0028은 **예시 데이터**입니다 (목업 이미지를 잘라 쓴 가상 작품). 실제 작품을 올린 뒤 관리자에서 삭제하세요.
