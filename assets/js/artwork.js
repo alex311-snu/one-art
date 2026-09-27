@@ -44,7 +44,7 @@
     }
 
     var artist = O.artistOf(catalog, artwork) || {};
-    var status = O.STATUS[artwork.status] || O.STATUS.available;
+    var status = O.publicStatus(artwork.status);
     var fromNfc = src === 'nfc';
     // 판매 후 NFC로 들어온 소장자에게는 작품 기록을 먼저 보여준다.
     var recordFirst = fromNfc && (artwork.status === 'sold' || artwork.status === 'nfs');
@@ -122,13 +122,13 @@
   function stats(artwork, status) {
     var left, right;
     if (artwork.status === 'sold') {
-      left = stat('최초 판매가', artwork.showSoldPrice && artwork.price ? O.won(artwork.price) : '비공개', !(artwork.showSoldPrice && artwork.price));
+      left = stat('최초 소장가', artwork.showSoldPrice && artwork.price ? O.won(artwork.price) : '비공개', !(artwork.showSoldPrice && artwork.price));
       right = stat('최초 소장', artwork.soldAt ? O.dot(artwork.soldAt) : '—');
     } else if (artwork.status === 'nfs') {
-      left = stat('판매', '비매품', true);
+      left = stat('소장 안내', '비매품', true);
       right = stat('제작', artwork.year || '—');
     } else {
-      left = stat(artwork.status === 'reserved' ? '판매가 · 예약 중' : '판매가', O.won(artwork.price) || '문의', !artwork.price);
+      left = stat(artwork.status === 'reserved' ? '작품 가격 · 예약 중' : '작품 가격', O.won(artwork.price) || '문의', !artwork.price);
       right = stat('실물 관람', artwork.viewingPlace || '문의 후 안내', true);
     }
     return '<div class="stats">' + left + right + '</div>';
@@ -164,9 +164,9 @@
     if (artwork.viewingPlace) info.push('실물 관람: ' + artwork.viewingPlace);
     var url = site.inquiryUrl || '';
     return '<div class="buy">' +
-      '<div class="buy-price"><span class="label" style="margin:0">구매 안내</span><span class="value">' + esc(O.won(artwork.price) || '가격 문의') + '</span></div>' +
+      '<div class="buy-price"><span class="label" style="margin:0">소장 안내</span><span class="value">' + esc(O.won(artwork.price) || '가격 문의') + '</span></div>' +
       '<ul>' + info.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>' +
-      (url ? '<a class="btn" href="' + esc(url) + '" target="_blank" rel="noopener">' + esc(site.inquiryLabel || '구매 문의하기') + '</a>' : '') +
+      (url ? '<a class="btn" href="' + esc(url) + '" target="_blank" rel="noopener">' + esc(site.inquiryLabel || '소장 문의하기') + '</a>' : '') +
       '<p style="margin:10px 0 0;font-size:12.5px;color:var(--faint);text-align:center">문의 시 작품번호 <b>ONE #' + esc(artwork.id) + '</b>를 알려주세요.</p>' +
       '</div>';
   }
@@ -211,7 +211,7 @@
     if (ex.length) items.push(['전시 이력', timeline(ex.map(function (e) { return { title: e.place, sub: O.period(e.from, e.to, '현재') }; }))]);
 
     if (artwork.status === 'sold') {
-      if (artwork.showSoldPrice && artwork.price) items.push(['최초 판매가', esc(O.won(artwork.price))]);
+      if (artwork.showSoldPrice && artwork.price) items.push(['최초 소장가', esc(O.won(artwork.price))]);
       if (artwork.soldAt) items.push(['최초 소장', esc(O.dot(artwork.soldAt))]);
     }
     var pv = (artwork.provenance || []).filter(function (p) { return p.label; });
@@ -247,7 +247,7 @@
 
   function card(catalog, a) {
     var ar = O.artistOf(catalog, a) || {};
-    var st = O.STATUS[a.status] || O.STATUS.available;
+    var st = O.publicStatus(a.status);
     var img = a.images && a.images[0] ? O.asset(a.images[0].src) : '';
     return '<a class="card" href="?id=' + encodeURIComponent(a.id) + '&src=web">' +
       (img ? '<img src="' + esc(img) + '" alt="" loading="lazy">' : '<div class="skeleton" style="aspect-ratio:1;animation:none"></div>') +

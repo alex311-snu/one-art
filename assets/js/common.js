@@ -12,6 +12,12 @@
     nfs: { label: '비매품', tone: 'muted' }
   };
 
+  // 관람자에게는 소장 관점으로 안내하고, 관리자는 기존 판매 상태를 사용한다.
+  function publicStatus(key) {
+    var status = STATUS[key] || STATUS.available;
+    return { label: status === STATUS.available ? '소장 가능' : status.label, tone: status.tone };
+  }
+
   function esc(value) {
     return String(value == null ? '' : value)
       .replace(/&/g, '&amp;')
@@ -84,6 +90,7 @@
   window.ONE = {
     ROOT: ROOT,
     STATUS: STATUS,
+    publicStatus: publicStatus,
     esc: esc,
     asset: asset,
     won: won,

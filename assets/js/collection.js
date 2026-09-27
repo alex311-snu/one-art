@@ -8,7 +8,7 @@
   var filtersEl = document.getElementById('filters');
   var FILTERS = [
     { key: 'all', label: '전체' },
-    { key: 'available', label: '판매 가능' },
+    { key: 'available', label: O.publicStatus('available').label },
     { key: 'sold', label: '소장됨' }
   ];
   var current = 'all';
@@ -55,7 +55,7 @@
     }
     list.innerHTML = '<div class="cards">' + works.map(function (a) {
       var ar = O.artistOf(catalog, a) || {};
-      var st = O.STATUS[a.status] || O.STATUS.available;
+      var st = O.publicStatus(a.status);
       var img = a.images && a.images[0] ? O.asset(a.images[0].src) : '';
       return '<a class="card" href="a/?id=' + encodeURIComponent(a.id) + '&src=web">' +
         (img ? '<img src="' + esc(img) + '" alt="' + esc(a.title) + '" loading="lazy">' : '<div class="skeleton" style="aspect-ratio:1;animation:none"></div>') +
