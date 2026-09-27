@@ -381,6 +381,7 @@
 
   // 공통 저장: 성공했을 때만 state.catalog를 바꾼다.
   function saveChange(message, mutate, files) {
+    if (state.saving) return Promise.reject(new Error('저장 중입니다. 잠시 후 다시 시도해 주세요.'));
     var next = clone(state.catalog);
     mutate(next);
     var text = JSON.stringify(next, null, 2) + '\n';
@@ -419,6 +420,13 @@
     renderRows();
 
     app.onclick = function (e) {
+      var action = e.target.closest('[data-sale-action]');
+      if (action) {
+        var item = findArtwork(action.getAttribute('data-id'));
+        if (!item || state.saving) return;
+        if (action.getAttribute('data-sale-action') === 'cancel') return changeStatus(item.id, 'available', action);
+        return markDelivered(item.id, action);
+      }
       var f = e.target.closest('[data-filter]');
       if (f) { state.filter = f.getAttribute('data-filter'); renderList(); }
     };
@@ -463,35 +471,61 @@
         '<select class="status-select ' + st.tone + '" data-status-of="' + esc(a.id) + '" aria-label="판매 상태">' +
         STATUS_ORDER.map(function (s) { return '<option value="' + s + '"' + (s === a.status ? ' selected' : '') + '>' + statusLabel(s) + '</option>'; }).join('') +
         '</select>' +
+        ((a.status === 'reserved' || a.status === 'sold') ? '<button class="a-btn ghost sm" data-sale-action="cancel" data-id="' + esc(a.id) + '">' + (a.status === 'reserved' ? '예약 취소' : '판매 취소') + '</button>' : '') +
+        (a.status === 'sold' ? (a.deliveredAt ? '<span class="a-item-meta">전달 완료 ' + esc(a.deliveredAt) + '</span>' : '<button class="a-btn ghost sm" data-sale-action="deliver" data-id="' + esc(a.id) + '">전달 완료</button>') : '') +
         '<a class="a-btn ghost sm" href="#/edit/' + encodeURIComponent(a.id) + '">수정</a>' +
         '<a class="a-btn ghost sm" href="../a/?id=' + encodeURIComponent(a.id) + '&src=admin" target="_blank" rel="noopener">보기</a>' +
         '</div></div>';
     }).join('') + '</div>';
   }
 
+  function confirmTransition(a, next) {
+    if (a.status !== 'sold' || next === 'sold') return true;
+    return confirm(a.saleSnapshot
+      ? '판매를 취소하고 거래 전 소장 이력으로 복구합니다. 전달 상태도 초기화되며 취소 기록은 남습니다. 계속할까요?'
+      : '이 작품은 이전 거래 스냅샷이 없습니다. 마지막 소유 이력을 취소하고 전달 상태를 초기화합니다. 마지막 기록이 취소할 거래의 소장자인지 확인했나요?');
+  }
+
   function changeStatus(id, next, selectEl) {
     var a = findArtwork(id);
-    if (!a || a.status === next) return;
-    var prev = a.status;
-    var note = '';
+    if (!a || a.status === next || state.saving) { renderList(); return; }
+    if (!confirmTransition(a, next)) { renderList(); return; }
     selectEl.disabled = true;
-    saveChange('#' + id + ' 상태 변경: ' + statusLabel(prev) + ' → ' + statusLabel(next), function (cat) {
-      var w = cat.artworks.find(function (x) { return x.id === id; });
-      w.status = next;
-      if (next === 'sold') {
-        if (!w.soldAt) w.soldAt = thisMonth();
-        if (!w.provenance || !w.provenance.length) {
-          w.provenance = [{ label: '첫 소장자 · 비공개', from: w.soldAt, to: '' }];
-          note = ' · 소장 시점과 소유 이력을 자동으로 채웠어요';
-        }
-      }
+    saveChange('#' + id + ' 상태 변경: ' + statusLabel(a.status) + ' → ' + statusLabel(next), function (cat) {
+      var draft = clone(a);
+      draft.status = next;
+      if (next === 'sold') draft.soldAt = thisMonth();
+      cat.artworks[cat.artworks.findIndex(function (x) { return x.id === id; })] = window.ONELifecycle.reconcile(a, draft);
     }).then(function () {
-      toast(statusLabel(next) + '(으)로 바꿨어요' + note + savedSuffix(), 3200);
+      toast('상태와 처리 이력을 저장했어요' + savedSuffix(), 3200);
       renderList();
-    }).catch(function (err) {
-      handleError(err);
-      renderList();
-    });
+    }).catch(function (err) { handleError(err); renderList(); });
+  }
+
+  function markDelivered(id, button) {
+    var a = findArtwork(id);
+    if (!a || a.status !== 'sold' || a.deliveredAt || state.saving) return;
+    if (!confirm('작품 전달을 완료했나요? 오늘 날짜로 기록합니다. 날짜는 작품 수정 화면에서 변경할 수 있어요.')) return;
+    button.disabled = true;
+    saveChange('#' + id + ' 전달 완료', function (cat) {
+      var draft = clone(a);
+      draft.deliveredAt = today();
+      cat.artworks[cat.artworks.findIndex(function (x) { return x.id === id; })] = window.ONELifecycle.reconcile(a, draft);
+    }).then(function () { toast('전달 완료를 기록했어요' + savedSuffix()); renderList(); })
+      .catch(function (err) { handleError(err); renderList(); });
+  }
+
+  function operationHistory(a) {
+    var labels = { reserved: '예약', reservation_cancelled: '예약 취소', sale_completed: '판매 완료', sale_cancelled: '판매 취소', delivered: '전달 완료·날짜 수정', delivery_cancelled: '전달 완료 취소', status_changed: '상태 변경' };
+    var rows = (a.operations || []).slice().reverse();
+    return '<section class="fs" id="s-operations"><h2>처리 이력</h2><p class="desc">저장된 예약·판매·취소·전달 기록입니다. 도입 이전 거래는 소유 이력과 GitHub 변경 기록에서 확인하세요. 이 데이터도 공개 저장소에 저장되므로 개인정보는 기록하지 않습니다.</p>' +
+      (rows.length ? '<ul class="history">' + rows.map(function (r) {
+        return '<li><strong>' + esc(labels[r.type] || r.type) + '</strong> · ' + esc(new Date(r.at).toLocaleString('ko-KR')) +
+          ' · ' + esc(statusLabel(r.from)) + ' → ' + esc(statusLabel(r.to)) +
+          (r.date ? ' · 전달일 ' + esc(r.date) : '') +
+          (r.previousDate ? ' · 이전 전달일 ' + esc(r.previousDate) : '') +
+          (r.deliveredAt ? ' · 취소 전 전달일 ' + esc(r.deliveredAt) : '') + '</li>';
+      }).join('') + '</ul>' : '<p>아직 처리 기록이 없습니다.</p>') + '</section>';
   }
 
   /* =========================================================
@@ -513,7 +547,7 @@
       images: [],
       quote: '', story: '', origin: '', process: '', video: '',
       status: 'available', price: '', framed: false, delivery: '', viewingPlace: '',
-      soldAt: '', showSoldPrice: false, care: '',
+      soldAt: '', showSoldPrice: false, care: '', deliveredAt: '', operations: [],
       verification: { artistApproved: false, approvedAt: '' },
       exhibitions: [], provenance: []
     };
@@ -551,7 +585,7 @@
       '</div>' +
       '<div class="form-grid"><nav class="form-nav" aria-label="입력 항목">' +
       '<a href="#s-basic" data-jump>기본 정보</a><a href="#s-images" data-jump>사진</a><a href="#s-story" data-jump>작품 이야기</a>' +
-      '<a href="#s-sale" data-jump>판매</a><a href="#s-record" data-jump>작품 기록</a><a href="#s-nfc" data-jump>NFC · QR</a>' +
+      '<a href="#s-sale" data-jump>판매</a><a href="#s-operations" data-jump>처리 이력</a><a href="#s-record" data-jump>작품 기록</a><a href="#s-nfc" data-jump>NFC · QR</a>' +
       (d.isNew ? '' : '<a href="#s-danger" data-jump>삭제</a>') +
       '</nav><div id="form">' +
 
@@ -594,9 +628,12 @@
       '<div class="f third" style="justify-content:flex-end">' + checkbox('framed', '액자 포함') + '</div>' +
       field('half', '전달 방법 · 비용', input('delivery', { placeholder: '서울 내 직접 전달 무료 · 그 외 택배비 별도' })) +
       field('half', '실물 관람 장소', input('viewingPlace', { placeholder: '서울대학교 313동 1층 로비' })) +
+      '<div class="f half" data-show="sold"><span>전달 완료일</span>' + input('deliveredAt', { type: 'date' }) + '<small>실제 전달한 날짜를 입력하세요. 비우고 저장하면 전달 완료가 취소됩니다.</small></div>' +
       '<div class="f half" data-show="sold">' + '<span>최초 소장 시점</span>' + input('soldAt', { type: 'month' }) + '</div>' +
       '<div class="f half" data-show="sold" style="justify-content:flex-end">' + checkbox('showSoldPrice', '판매 후에도 최초 판매가 공개', '소장자가 동의한 경우에만 켜세요') + '</div>' +
       '</div></section>' +
+
+      operationHistory(a) +
 
       // 기록
       '<section class="fs" id="s-record"><h2>작품 기록</h2><p class="desc">NFC로 확인하는 작가 승인과 이력입니다. 구매자 실명·연락처는 절대 적지 마세요 (이 데이터는 공개됩니다).</p><div class="fields">' +
@@ -933,6 +970,8 @@
 
     var message = (d.isNew ? '작품 추가' : '작품 수정') + ': #' + a.id + ' ' + a.title;
     var original = d.isNew ? null : findArtwork(d.originalId);
+    if (original && !confirmTransition(original, a.status)) return;
+    try { a = window.ONELifecycle.reconcile(original, a); } catch (err) { handleError(err); return; }
 
     saveChange(message, function (cat) {
       var i = cat.artworks.findIndex(function (x) { return x.id === d.originalId; });
